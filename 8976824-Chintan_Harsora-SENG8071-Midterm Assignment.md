@@ -8,9 +8,10 @@
 | 8887759       |Daksh Patel      |
 | 8781807       | Jaykumar Patel  |
 
-###### Table was created by **Jaykumar patel**
-###### Data insertion and CRUD operation done by **Daksh Patel**
-###### Requirement querys were done by **Chintan Harsora**
+###### Table was created by **Jaykumar patel**.
+###### Data insertion and CRUD operation done by **Daksh Patel**.
+###### Requirement querys were done by **Chintan Harsora**.
+###### All members have participated in the typescript.
 
 ## DDL &DML
 ### Create Table
