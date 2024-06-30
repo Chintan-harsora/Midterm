@@ -217,7 +217,7 @@ FUNCTION UpdateBook(book: Book)
         SET sqlQuery TO "
             UPDATE books
             SET 
-				book_id=book.book_id,
+		book_id=book.book_id,
             	title = book.tilte,
             	genre = book.genre,
             	author_name = book.author_name,
@@ -242,8 +242,8 @@ FUNCTION UpdateBook(book: Book)
             SET preparedStatement TO connection.prepareStatement(sqlQuery)
 
             // Bind the book values to the SQL query
-			preparedStatement.setString(1, book.book_id)
-            preparedStatement.setString(1, book.title)
+		preparedStatement.setString(1, book.book_id)
+            	preparedStatement.setString(1, book.title)
         	preparedStatement.setString(2, book.genre)
         	preparedStatement.setString(3, book.author_name)
         	preparedStatement.setString(4, book.publisher_name)
