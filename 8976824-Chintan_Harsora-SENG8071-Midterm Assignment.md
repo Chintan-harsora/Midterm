@@ -189,4 +189,87 @@ ORDER BY
     r.review_date DESC
 LIMIT 10;
 ```
+## Bookstore typescript
+**TypeScript Interface for Modifying a Table (Books)**
+```
+interface UpdateBook {
+  book_id: number;
+  title?: string;
+  genre?: string;
+  author_name?: string;
+  publisher_name?: string;
+  published_date?: string; 
+  book_type?: 'Physical' | 'E-book' | 'Audiobook';
+  rating?: number; 
+  price?: number;
+}
+```
+```
+FUNCTION UpdateBook(book: Book)
+    BEGIN
+        // Check if book object is valid
+        IF book IS NULL THEN
+            PRINT "Invalid book data"
+            RETURN
+        END IF
 
+        // Prepare SQL update statement
+        SET sqlQuery TO "
+            UPDATE books
+            SET 
+				book_id=book.book_id,
+            	title = book.tilte,
+            	genre = book.genre,
+            	author_name = book.author_name,
+            	publisher_name = book.publisher_name,
+            	published_date = book.published_date,
+            	book_type = book.book_type,
+            	rating = book.rating,
+            	price = book.price
+        WHERE book_id = book.book_id"
+
+        // Establish a connection to the database
+        SET connection TO openDatabaseConnection()
+
+        // Check if connection is successful
+        IF connection IS NULL THEN
+            PRINT "Failed to connect to the database"
+            RETURN
+        END IF
+
+        TRY
+            // Create a prepared statement
+            SET preparedStatement TO connection.prepareStatement(sqlQuery)
+
+            // Bind the book values to the SQL query
+			preparedStatement.setString(1, book.book_id)
+            preparedStatement.setString(1, book.title)
+        	preparedStatement.setString(2, book.genre)
+        	preparedStatement.setString(3, book.author_name)
+        	preparedStatement.setString(4, book.publisher_name)
+        	preparedStatement.setDate(5, book.published_date) 
+        	preparedStatement.setString(6, book.book_type)
+        	preparedStatement.setBigDecimal(7, book.rating) 
+        	preparedStatement.setBigDecimal(8, book.price) 
+        	preparedStatement.setInt(9, book.book_id)
+
+            // Execute the update query
+            SET rowsAffected TO preparedStatement.executeUpdate()
+
+            // Check if the update was successful
+            IF rowsAffected > 0 THEN
+                PRINT "Book updated successfully"
+            ELSE
+                PRINT "No book found with the given ID"
+            END IF
+        CATCH (SQLException e)
+            PRINT "SQL Error: " + e.getMessage()
+        FINALLY
+            // Close the prepared statement and connection
+            preparedStatement.close()
+            connection.close()
+        END TRY
+    END
+END FUNCTION
+
+```
